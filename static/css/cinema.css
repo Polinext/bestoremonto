@@ -1,0 +1,129 @@
+/* BESTOREMONTO — кинематографическая главная.
+   Закреплённый трек на 1400vh: три тезиса о компании, блок основателя,
+   услуги со счётчиками и раскрытие через звезду. Палитра и типографика —
+   из токенов main.css, приём последовательности — из _reference/keld-template.html. */
+
+/* ───────────── трек и сцена ───────────── */
+.cinema{position:relative;z-index:1;height:1342vh;background:var(--c-ink-950);color:var(--c-light);
+  /* всё, что прижато к верху сцены, опускается под фиксированную шапку */
+  --cin-top:calc(var(--header-h) + var(--gutter))}
+.cin-trig{position:absolute;left:0;right:0;visibility:hidden;pointer-events:none}
+/* Цель для пунктов шапки: прокрутка останавливается на нужной отметке трека. */
+.cin-anchor{position:absolute;left:0;right:0;height:1px;pointer-events:none}
+.cin-stage{position:sticky;top:0;height:100dvh;width:100%;overflow:hidden}
+
+/* Без JS трек схлопывается: содержимое читается обычным потоком. */
+html:not(.js) .cinema{height:auto}
+html:not(.js) .cin-stage{position:static;height:auto;overflow:visible;padding:var(--section-y) 0}
+html:not(.js) .cin-block,
+html:not(.js) .cin-layer{position:static;visibility:visible!important;opacity:1!important;
+  transform:none!important;filter:none!important;clip-path:none!important}
+html:not(.js) .cin-slot{position:static}
+html:not(.js) .cin-star,html:not(.js) .cin-cross{display:none}
+
+/* Покадровый пролёт: постер виден сразу, canvas накрывает его, как только нарисован кадр. */
+.cin-art{position:absolute;inset:0}
+.cin-media,.cin-media img,.cin-media canvas{position:absolute;inset:0;width:100%;height:100%}
+.cin-media img,.cin-media canvas{object-fit:cover}
+.cin-media canvas{opacity:0;transition:opacity .4s linear}
+.cin-media canvas.is-ready{opacity:1}
+.cin-art .plan-drawing{display:none}
+.cin-art::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(to right,rgb(12 13 11 / .72),rgb(12 13 11 / .28) 55%,rgb(12 13 11 / .62))}
+.cin-grid{position:absolute;inset:0}
+.cinema .gridlines span{border-color:var(--line-on-dark)}
+
+/* ───────────── тезисы о компании ───────────── */
+/* До запуска cinema.js все три тезиса лежат друг на друге — прячем их,
+   чтобы не мигнуть стопкой слов. Без JS правило не действует. */
+.js .cin-stage:not(.is-live) .cin-block,
+.js .cin-stage:not(.is-live) .cin-layer{opacity:0}
+.cin-block{position:absolute;inset:0;z-index:5;pointer-events:none}
+.cin-exit{position:absolute;inset:0}
+.cin-slot{position:absolute}
+.cin-word{display:block;font-size:var(--fs-display);line-height:.9;letter-spacing:var(--track-tight);font-weight:400}
+.slot-tl{left:var(--gutter);top:var(--cin-top)}
+.slot-tr{right:var(--gutter);top:var(--cin-top)}
+.slot-cl{left:var(--gutter);top:50%;translate:0 -50%}
+.slot-cr{right:var(--gutter);top:50%;translate:0 -50%}
+.slot-c{left:50%;top:50%;translate:-50% -50%}
+.slot-bl{left:var(--gutter);bottom:var(--gutter)}
+.slot-br{right:var(--gutter);bottom:var(--gutter)}
+.cin-desc{position:absolute;bottom:var(--gutter);width:min(22rem,42vw);font-size:var(--fs-body);
+  line-height:1.5;color:var(--c-light-muted)}
+.cin-desc.is-right{right:var(--gutter);text-align:right}
+.cin-desc.is-left{left:var(--gutter)}
+
+@media (max-width:767.98px){
+  .slot-bl,.slot-br{bottom:13rem}
+  .cin-desc{left:var(--gutter);right:var(--gutter);width:auto;bottom:6.5rem;text-align:left}
+}
+
+/* ───────────── основатель ───────────── */
+.cin-layer{position:absolute;inset:0;overflow:hidden}
+.cin-founder{z-index:10}
+.cin-founder-panel{position:absolute;inset:0 auto 0 0;z-index:2;display:flex;width:min(52%,40rem);
+  flex-direction:column;justify-content:space-between;gap:2rem;
+  padding:var(--cin-top) clamp(28px,4vw,56px) clamp(28px,4vw,56px);background:rgb(12 13 11 / .82);
+  border-right:1px solid var(--line-on-dark);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px)}
+.cin-founder-art{position:absolute;inset:0;overflow:hidden}
+.cin-founder-art img{width:100%;height:100%;object-fit:cover}
+.cin-founder-name{display:block;font-size:var(--fs-h1);line-height:.95;letter-spacing:var(--track-tight);margin:0}
+.cin-founder-role{margin:.75rem 0 0;color:var(--c-light-muted)}
+.cin-founder-story{margin:1.25rem 0 0;display:grid;gap:.75rem;color:var(--c-light-muted);max-width:44ch}
+.cin-motto{display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;margin:1.5rem 0 0;padding:0;list-style:none}
+.cin-motto li{font-size:var(--fs-small);text-transform:uppercase;letter-spacing:var(--track-caps);
+  color:var(--c-accent)}
+@media (max-width:767.98px){.cin-founder-panel{width:100%;border-right:0}}
+
+/* ───────────── услуги и счётчики ───────────── */
+.cin-services{z-index:20}
+.cin-services-bg{position:absolute;inset:0;overflow:hidden}
+.cin-services-bg img{width:100%;height:100%;object-fit:cover}
+.cin-services-bg::after{content:"";position:absolute;inset:0;background:rgb(12 13 11 / .5)}
+.cin-cross{position:absolute;inset:0;z-index:2;pointer-events:none}
+.cin-cross i{position:absolute;background:var(--line-on-dark)}
+.cin-cross i:first-child{left:0;right:0;top:50%;height:1px}
+.cin-cross i:last-child{top:0;bottom:0;left:50%;width:1px}
+.cin-services-title{position:absolute;left:var(--gutter);top:var(--cin-top);z-index:5;margin:0;
+  display:flex;flex-direction:column;font-size:var(--fs-h3);text-transform:uppercase;
+  letter-spacing:var(--track-title);line-height:1.15;font-weight:500}
+
+.cin-stat{position:absolute;z-index:5;margin:0;display:flex;flex-direction:column-reverse;gap:.5rem}
+.cin-stat dt{font-size:var(--fs-small);text-transform:uppercase;letter-spacing:var(--track-caps);
+  color:var(--c-light-muted)}
+.cin-stat dd{margin:0;font-size:var(--fs-h1);line-height:.9;letter-spacing:var(--track-tight);
+  font-variant-numeric:tabular-nums}
+.cin-drum{display:inline-block}
+.stat-tr{right:var(--gutter);top:var(--cin-top);align-items:flex-end;text-align:right}
+.stat-bl{left:var(--gutter);bottom:var(--gutter);align-items:flex-start}
+.stat-br{right:var(--gutter);bottom:var(--gutter);align-items:flex-end;text-align:right}
+@media (max-width:767.98px){
+  .cin-stat{max-width:44%}
+  .stat-bl,.stat-br{bottom:7rem}
+}
+
+/* ───────────── звезда и раскрытие панели ───────────── */
+.cin-star{position:absolute;left:50%;top:50%;z-index:6;width:156.25rem;aspect-ratio:1;
+  translate:-50% -50%;pointer-events:none}
+.cin-star svg{width:100%;height:100%}
+/* Логотип проступает в момент, когда ромб закрывает экран целиком. */
+.cin-mark{position:absolute;left:50%;top:50%;z-index:35;margin:0;translate:-50% -50%;
+  white-space:nowrap;pointer-events:none;opacity:0;
+  font-size:clamp(1.5rem,4.2vw,3.75rem);font-weight:500;line-height:1;
+  letter-spacing:.24em;text-indent:.24em;color:var(--c-light)}
+
+/* ───────────── побуквенные раскрытия ───────────── */
+.letters{display:flex;flex-wrap:wrap;column-gap:.28em}
+.letters.is-clip{line-height:1.1}
+.let-word{display:inline-block}
+.let-word.is-clip{overflow:hidden;line-height:1.1;margin-bottom:-.875rem;padding-bottom:1rem;
+  -webkit-mask-image:linear-gradient(to bottom,#000 45%,transparent);
+  mask-image:linear-gradient(to bottom,#000 45%,transparent)}
+.let{display:inline-block;white-space:pre}
+html:not(.js) .letters{display:block}
+
+/* ───────────── призыв с фотографией ───────────── */
+.cta-block.has-photo{position:relative;isolation:isolate;overflow:hidden}
+.cta-block.has-photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.cta-block.has-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:rgb(31 37 33 / .78)}
